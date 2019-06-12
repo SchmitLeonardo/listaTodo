@@ -1,7 +1,7 @@
 
 var input = document.querySelector('input');
 var btn = document.querySelector('button');
-var lista =  document.querySelector('table');
+var lista =  document.getElementById('content');
 
 var todos = JSON.parse(localStorage.getItem('lista_todo')) || [];
 
@@ -20,6 +20,10 @@ function geraLista(){
         var colunaTabela = document.createElement('td');
         var colunaContent = document.createTextNode(todo);
 
+        colunaTabela.appendChild(colunaContent);
+        linhaTabela.appendChild(colunaTabela);
+        lista.appendChild(linhaTabela);
+
         var colunaLink = document.createElement('td');
         var linkEditar = document.createElement('a');
         var linkContent = document.createTextNode('Editar');
@@ -27,20 +31,25 @@ function geraLista(){
 
         colunaLink.appendChild(linkEditar);
         linkEditar.appendChild(linkContent);
-        
+        linhaTabela.appendChild(colunaLink);
+
+        var posicao = todos.indexOf(todo);
 
         var linkDeletar = document.createElement('a');
         var deletarContent = document.createTextNode(' Remover');
         linkDeletar.setAttribute('href', '#');
+        linkDeletar.setAttribute('onclick', 'deletarTodo('+posicao+')');
 
         colunaLink.appendChild(linkDeletar);
         linkDeletar.appendChild(deletarContent);
 
-        colunaTabela.appendChild(colunaContent);
-        linhaTabela.appendChild(colunaTabela);
-        lista.appendChild(linhaTabela);
-        linhaTabela.appendChild(colunaLink);
+        var colunaRadio = document.createElement('td');
+        var radioConcluido = document.createElement('input');
+        radioConcluido.setAttribute('type', 'checkbox');
+        radioConcluido.setAttribute('name', 'completo');
 
+        colunaRadio.appendChild(radioConcluido);
+        linhaTabela.appendChild(colunaRadio);
     }
 
     input.value = '';
@@ -48,13 +57,22 @@ function geraLista(){
 
 geraLista();
 
+function limparTela(){
+    lista.innerHTML = '';
+}
 
 function adicionarTodo(){
 
-    lista.innerHTML = '';
-
+    limparTela();
     todos.push(input.value);
     geraLista();
+}
+
+function deletarTodo(posicao){
+    todos.splice(posicao, 1);
+    limparTela();
+    geraLista();
+    salvarLocalStorage();
 }
 
 btn.onclick = () => {
