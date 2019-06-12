@@ -44,3 +44,12 @@ function geraLista(){
 }
 
 geraLista();
+
+
+function adicionarTodo(){
+
+    lista.innerHTML = '';
+
+    todos.push(input.value);
+    geraLista();
+}
