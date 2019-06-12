@@ -53,3 +53,8 @@ function adicionarTodo(){
     todos.push(input.value);
     geraLista();
 }
+
+btn.onclick = () => {
+    adicionarTodo();
+    salvarLocalStorage();
+}
