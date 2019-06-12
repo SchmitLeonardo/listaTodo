@@ -3,12 +3,15 @@ var input = document.querySelector('input');
 var btn = document.querySelector('button');
 var lista =  document.querySelector('table');
 
+var todos = JSON.parse(localStorage.getItem('lista_todo')) || [];
+
+/*
 var todos = [
     'Fazer café',
     'Passear com o cachorro',
     'Estudar'
 ]
-
+*/
 
 function geraLista(){
 
@@ -57,4 +60,8 @@ function adicionarTodo(){
 btn.onclick = () => {
     adicionarTodo();
     salvarLocalStorage();
+}
+
+function salvarLocalStorage(){
+    localStorage.setItem('lista_todo', JSON.stringify(todos));
 }
