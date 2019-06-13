@@ -6,16 +6,7 @@ var lista =  document.getElementById('content');
 var todos = JSON.parse(localStorage.getItem('lista_todo')) || [];
 var checks = JSON.parse(localStorage.getItem('lista_checks')) || [];
 
-/*
-var todos = [
-    'Fazer café',
-    'Passear com o cachorro',
-    'Estudar'
-]
-*/
-
 function geraLista(){
-
     for(index in todos){
         var todo = todos[index];
         var linhaTabela = document.createElement('tr');
@@ -26,35 +17,31 @@ function geraLista(){
         linhaTabela.appendChild(colunaTabela);
         lista.appendChild(linhaTabela);
 
-        var deletar = todos.indexOf(todo);
+        var posicao = todos.indexOf(todo);
+        var posicaoCheck = checks.indexOf(checks[index]);
 
         var colunaLink = document.createElement('td');
         var linkEditar = document.createElement('a');
         var linkContent = document.createTextNode('Editar');
         linkEditar.setAttribute('href', '#');
-        linkEditar.setAttribute('onclick', 'editarTodo('+ deletar +')');
+        linkEditar.setAttribute('onclick', 'editarTodo('+ posicao +')');
 
         colunaLink.appendChild(linkEditar);
         linkEditar.appendChild(linkContent);
-        linhaTabela.appendChild(colunaLink);
-
-        var posicao = todos.indexOf(todo);
+        linhaTabela.appendChild(colunaLink);            
 
         var linkDeletar = document.createElement('a');
         var deletarContent = document.createTextNode(' Remover');
         linkDeletar.setAttribute('href', '#');
-        linkDeletar.setAttribute('onclick', 'deletarTodo('+posicao+')');
+        linkDeletar.setAttribute('onclick', 'deletarTodo('+ posicao+')');
 
         colunaLink.appendChild(linkDeletar);
         linkDeletar.appendChild(deletarContent);
 
-        var check = todos.indexOf(todo);
-
         var colunaCheck = document.createElement('td');
         var checkConcluido = document.createElement('input');
         checkConcluido.setAttribute('type', 'checkbox');
-        checkConcluido.setAttribute('class', 'checkbox');
-        checkConcluido.setAttribute('onchange', 'checkList('+check+')');
+        checkConcluido.setAttribute('onchange', 'checkList('+index+')');
         if(checks[index] === true){
             checkConcluido.setAttribute('checked', checks[index]);
         }
@@ -79,12 +66,13 @@ function limparTela(){
 function adicionarTodo(){
     limparTela();
     todos.push(input.value);
+    adicionarCheck();
     geraLista();
 }
 
 function deletarTodo(posicao){
     todos.splice(posicao, 1);
-    console.log(posicao);
+    deletarCheck();
     limparTela();
     geraLista();
     salvarLocalStorage();
@@ -106,33 +94,32 @@ function editarTodo(posicao){
     }
 }
 
-function adicionarCheck(check){  
-    if(checks[check] === true || checks[check] === false){
-        verificaCheck(checks[check], check);
-    }else{
-        checks.push(checks[this] = true);
-    }
-}
-
-function verificaCheck(resp, check){   
-    
-    if(resp === true){
-        // console.log('unchecked');
-        checks[check] = false;
-        // localStorage.setItem('list_checks', JSON.stringify(checks));
-        console.log(checks);
-    }else{
-        // console.log('checked');
-        checks[check] = true;
-        console.log(checks);
-    }
+function salvarLocalStorageCheck(){
     localStorage.setItem('lista_checks', JSON.stringify(checks));
 }
 
 function checkList(check){
-    adicionarCheck(check);
-    // console.log(check);
+    console.log(check);
+    if(checks[check] === true || checks[check] === false){
+        if(checks[check] === true){
+            checks[check] = false;
+        }else{
+            checks[check] = true;
+        }
+        salvarLocalStorageCheck();
+    }else{
+        adicionarCheck(check);
+    }
 }
 
+function adicionarCheck(check){
+    checks.push(checks[check] = false);
+    salvarLocalStorageCheck();
+}
 
-
+function deletarCheck(){
+    checks.splice(checks[this], 1);
+    salvarLocalStorageCheck();
+    limparTela();
+    geraLista();
+}
