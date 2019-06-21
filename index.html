@@ -4,22 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <title>Lista Todo</title>
 </head>
 <body>
-    
-    <h2>Meus Todos</h2>
-    <input type="text">
-    <button type="submit">Salvar</button>
+    <div class="header">
+        <h2>Meus Todos</h2>
+    </div>
+    <div class="todos">
+        <div class="todo" onclick="mostrarOpcoes()">
+            <h3>Fazer café</h3>
+            <div class="opcoes">
+                <h3 class="editar-todo">Editar</h3>
+                <h3>Remover</h3>
+            </div>
+        </div>
+        <div class="todo" onclick="mostrarOpcoes()">
+            <h3>Fazer café</h3>
+            <div class="opcoes">
+                <h3 class="editar-todo">Editar</h3>
+                <h3>Remover</h3>
+            </div>
+        </div>
+    </div>
 
-    <table>
-        <tr>
-            <th>Todo</th>
-            <th>Ações</th>
-        </tr>
-        <tr></tr>
-    </table>
+    <!-- Botão adicionar todo -->
+    <div class="botao-adicionar"></div>
+
+    <div id="modal-todo" class="modal-container">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Adicionar Todo</h3>
+            </div>
+            <div class="modal-body">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                <!-- <form>
+                    <label>Todo</label>
+                    <input type="text">
+                </form> -->
+            </div>
+            <div class="modal-footer">
+                <a href="#"><p>Adicionar</p></a>
+                <a href="#" class="cancelar"><p>Cancelar</p></a>
+            </div>
+        </div>
+    </div>
 
     <script src="main.js"></script>
+    <!-- <script src="lista.js"></script> -->
 </body>
 </html>
