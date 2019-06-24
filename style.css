@@ -135,6 +135,18 @@ html,body{
     text-decoration: none;
 }
 
+.todoVazio{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50%;
+}
+
+.todoVazio h2, h4{
+    text-align: center;
+}
+
 @keyframes modal{
     from{
         opacity: 0;

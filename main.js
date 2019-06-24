@@ -8,26 +8,31 @@ var opcoes = document.querySelector('.opcoes');
 var principal = { 
     lista: JSON.parse(localStorage.getItem('lista_todos')) || [],
     geraTodo: () =>{
-      for(index in principal.lista){
-        var item = principal.lista[index];
-        var novoTodo = document.createElement('div');
-        novoTodo.innerHTML = `<div class="todo">
-            <input type="checkbox" name="checkbox" class="checkbox">
-            <h3 class="tituloTodo" onclick="principal.mostrarOpcoes(`+index+`)">`+item+`</h3>
-        </div>
-        <div class="opcoes">
-            <h3 class="editar-todo" onclick="principal.modalEditar(`+index+`)"><img src="img/edit.svg"> Editar</h3>
-            <h3 class="deletar-todo" onclick="principal.modalExcluir(`+index+`)"><img src="img/delete.svg"> Remover</h3>
-        </div>`
-
-        todosContent.appendChild(novoTodo);
+      if(principal.lista == ''){
+        todosContent.innerHTML = `<div class="todoVazio">
+              <h2>Nenhum Todo Adicionado</h2>
+              <h4>Clique no botão para adicionar um novo Todo</h4>
+          </div>`
+      }else{
+        for(index in principal.lista){
+          var item = principal.lista[index].novoTodo;
+          var novoTodo = document.createElement('div');
+          novoTodo.innerHTML = `<div class="todo">
+          <input type="checkbox" class="checkbox" onchange="principal.mudaCheck(`+index+`)">
+              <h3 class="tituloTodo" onclick="principal.mostrarOpcoes(`+index+`)">`+item+`</h3>
+          </div>
+          <div class="opcoes">
+              <h3 class="editar-todo" onclick="principal.modalEditar(`+index+`)"><img src="img/edit.svg"> Editar</h3>
+              <h3 class="deletar-todo" onclick="principal.modalExcluir(`+index+`)"><img src="img/delete.svg"> Remover</h3>
+          </div>`
+  
+          todosContent.appendChild(novoTodo);
+        }
       }
 
+      principal.verificaCheck();
       var botaoAdicionar = document.querySelector('.botao-adicionar');
       botaoAdicionar.setAttribute('onclick', 'principal.modalAdicionar()');
-    
-      // var botaoAdicionar = document.querySelector('.botao-adicionar');
-      // botaoAdicionar.setAttribute('onclick', 'principal.modalAdicionar()');
       
       window.onclick = function(event){
           if (event.target == modal) {
@@ -69,8 +74,7 @@ var principal = {
       </div>`
     },
     modalEditar: (pos) => {
-      // console.log(this.document.querySelectorAll('.tituloTodo').textContent);
-      var content = principal.lista[pos];
+      var content = principal.lista[pos].novoTodo;
       modal.style.display = "flex";
       modal.innerHTML = `<div class="modal">
             <div class="modal-header">
@@ -91,7 +95,7 @@ var principal = {
       modal.style.display = "none";
     },
     editarTodo: (pos) => {
-      principal.lista[pos] = this.document.querySelector('.todoEditado').value;
+      principal.lista[pos].novoTodo = this.document.querySelector('.todoEditado').value;
       principal.limparTela();
       principal.geraTodo();
       principal.fecharModal();
@@ -105,10 +109,29 @@ var principal = {
     },
     adicionaTodo: () => {
       var novoTodo = this.document.querySelector('.adiciona-todo').value;
-      principal.lista.push(novoTodo);
+      var check = false;
+      principal.lista.push({novoTodo, check});
       principal.limparTela();
       principal.geraTodo();
       principal.fecharModal();
+      principal.salvarLocalStorage();
+    },
+    verificaCheck: () =>{
+      var boxCheck = document.querySelectorAll('.checkbox');
+      for(index in principal.lista){
+        if(principal.lista[index].check == true){
+          boxCheck[index].setAttribute('checked', principal.lista[index].check);
+        }
+      }
+    },
+    mudaCheck: (pos) => {
+      if(principal.lista[pos].check == true){
+        principal.lista[pos].check = false;
+        console.log(principal.lista[pos].check);
+      }else{
+        principal.lista[pos].check = true;
+        console.log(principal.lista[pos].check);
+      }
       principal.salvarLocalStorage();
     }
 }
