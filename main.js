@@ -127,10 +127,8 @@ var principal = {
     mudaCheck: (pos) => {
       if(principal.lista[pos].check == true){
         principal.lista[pos].check = false;
-        console.log(principal.lista[pos].check);
       }else{
         principal.lista[pos].check = true;
-        console.log(principal.lista[pos].check);
       }
       principal.salvarLocalStorage();
     }
